@@ -200,10 +200,10 @@ int main(int argc, char *argv[]) {
             for (int i = 0, size = jobs.size(); i < size; ++i) {
                 if (jobs[i].running) terminate(i);
             }
-            exit(0);
+            break;
         } else if (items[0] == "quit") {
             std::cout << "Exiting a1jobs without terminating head processes" << std::endl;
-            exit(0);
+            break;
         } else {
             std::cout << "ERROR: Invalid Input" << std::endl;
         }
@@ -220,4 +220,5 @@ int main(int argc, char *argv[]) {
     printf("sys:         %li\n sec.", (long int)(en_cpu.tms_stime - st_cpu.tms_stime)/sysconf(_SC_CLK_TCK));
     printf("child user:  %li\n sec.", (long int)(en_cpu.tms_cutime - st_cpu.tms_cutime)/sysconf(_SC_CLK_TCK));
     printf("child sys:   %li\n sec.", (long int)(en_cpu.tms_cstime - st_cpu.tms_cstime)/sysconf(_SC_CLK_TCK));
+    exit(0);
 }
