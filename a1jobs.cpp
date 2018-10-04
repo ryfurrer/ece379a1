@@ -29,7 +29,7 @@ using std::vector;
 struct job {
     uint index; 
     pid_t pid; 
-    const char *cmd;
+    std::string cmd;
     uint running=1;
 } ;
 
@@ -66,7 +66,7 @@ void safeguard() {
 	setrlimit(RLIMIT_CPU, &my_rlimit );
 }
 
-job makeJob(pid_t p, const char *s){
+job makeJob(pid_t p, std::string s){
     job j;
     j.index = job_idx;
     j.pid = p;
@@ -89,7 +89,7 @@ A job is considered admitted if the program is successfully executed.
 The process running pgm is the head process of the job. As mentioned above, program a1jobs admits at most MAXJOBS jobs (the count includes
 jobs that the user has explicitly terminated).
 */
-uint run (vector<std::string> items, const char *s) {
+uint run (vector<std::string> items, std::string s) {
     
     if (job_idx < MAXJOBS) {
         pid_t c_pid = fork();
@@ -100,14 +100,19 @@ uint run (vector<std::string> items, const char *s) {
                     return -1;
                 case 2:
                     execlp(items[1].c_str(), items[1].c_str(), (char *)NULL);
+                    break;
                 case 3:
                     execlp(items[1].c_str(), items[1].c_str(), items[2].c_str(), (char *)NULL);
+                    break;
                 case 4:
                     execlp(items[1].c_str(), items[1].c_str(), items[2].c_str(), items[3].c_str(), (char *)NULL);
+                    break;
                 case 5:
                     execlp(items[1].c_str(), items[1].c_str(), items[2].c_str(), items[3].c_str(), items[4].c_str(), (char *)NULL);
+                    break;
                 case 6:
                     execlp(items[1].c_str(), items[1].c_str(), items[2].c_str(), items[3].c_str(), items[4].c_str(), items[5].c_str(), (char *)NULL);
+                    break;
                 default:
                     std::cout << "ERROR: Too many args for run" << std::endl;
                     return -1;
@@ -116,7 +121,9 @@ uint run (vector<std::string> items, const char *s) {
         } else {
             jobs.push_back(makeJob(c_pid, s));
             job_idx++;
+            
         }
+        
         
         return 0;
     }
@@ -149,6 +156,7 @@ signal SIGKILL to its head process.
 */
 void terminate (uint jobNo) {
     if (jobNo < job_idx) {
+        std::cout << "Killing: " << jobs[jobNo].pid << std::endl;
         jobs[jobNo].running = 0;
         kill(jobs[jobNo].pid, SIGKILL);
     }
@@ -182,7 +190,7 @@ int main(int argc, char *argv[]) {
         } else if (items[0] == "list") {
             list();
         } else if (items[0] == "run") {
-            run(items, cmd.c_str());//items[1]);
+            std::cout << run(items, cmd) << std::endl;//items[1]);
         } else if (items[0] == "suspend") {
             suspend(atoi(items[1].c_str()));
         } else if (items[0] == "resume") {
@@ -193,10 +201,10 @@ int main(int argc, char *argv[]) {
             for (int i = 0, size = jobs.size(); i < size; ++i) {
                 if (jobs[i].running) terminate(i);
             }
-            break;
+            exit(0);
         } else if (items[0] == "quit") {
             std::cout << "Exiting a1jobs without terminating head processes" << std::endl;
-            break;
+            exit(0);
         } else {
             std::cout << "ERROR: Invalid Input" << std::endl;
         }

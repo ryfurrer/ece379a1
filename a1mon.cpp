@@ -63,6 +63,7 @@ void safeguard() {
 
 void terminate(std::vector<std::tuple<std::string, std::string>> children) {
     for (int i = 0, size = children.size(); i < size; ++i) {
+        std::cout << "Killing: " << std::get<0>(children[i]) << std::endl;
         kill(std::stoi(std::get<0>(children[i])), SIGKILL);
     }
 }
@@ -78,11 +79,18 @@ int find_pid(Process_list ps_data, std::string tpid){
 }
 
 
+std::vector<std::tuple<std::string, std::string>> joinVects(std::vector<std::tuple<std::string, std::string>> v1, std::vector<std::tuple<std::string, std::string>> v2){
+    std::vector<std::tuple<std::string, std::string>> v3;
+    v3.reserve( v1.size() + v2.size() ); // preallocate memory
+    v3.insert( v3.end(), v1.begin(), v1.end() );
+    v3.insert( v3.end(), v2.begin(), v2.end() );
+    return v3;
+}
+
 //returns a vector of all the pids and cmds of the 
 //children to the parent process, ppid
 std::vector<std::tuple<std::string, std::string>> get_children(Process_list ps_data, std::string ppid){
     std::vector<std::tuple<std::string, std::string>> base;
-    printf("Monitored process list:\n");
     for (int i = 0, size = ps_data.size(); i < size; ++i) {
         if (std::get<2>(ps_data[i]).compare(ppid) == 0) {
             printf("%lu: %s, %s", base.size(), std::get<1>(ps_data[i]).c_str(), std::get<5>(ps_data[i]).c_str());
@@ -90,7 +98,14 @@ std::vector<std::tuple<std::string, std::string>> get_children(Process_list ps_d
         }
     }
     
-    return base; // (pid, cmd)
+    std::vector<std::tuple<std::string, std::string>> children;
+    if (base.size()){
+        for (int i = 0, size = base.size(); i < size; ++i) {
+            children = joinVects(children, get_children(ps_data, std::get<0>(ps_data[i])));
+        }
+    }
+    
+    return joinVects(base, children); // (pid, cmd)
 }
 
 
@@ -149,7 +164,6 @@ int main(int argc, char *argv[]) {
         printf("Too many arguments\n");
         return 1;
     }
-    printf("Loop\n");
 
 	// 2. Run the main loop
 	for (;;) {
@@ -161,9 +175,6 @@ int main(int argc, char *argv[]) {
         ps_data = run_ps();
         //process each line produced by popen
         
-        children = get_children(ps_data, target_pid);
-        
-        //display children;
         
         //(d) Based on the data obtained during the iteration, the 
         // program decides if the target process is still running.         
@@ -175,6 +186,9 @@ int main(int argc, char *argv[]) {
             return 0;
         }
         
+        printf("Monitored process list:\n");
+        children = get_children(ps_data, target_pid);
+        //display children;
         
         //(e) The next iteration, is delayed by interval seconds
         sleep(interval);
