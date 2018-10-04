@@ -189,7 +189,7 @@ int main(int argc, char *argv[]) {
         } else if (items[0] == "list") {
             list();
         } else if (items[0] == "run") {
-            std::cout << run(items, cmd) << std::endl;//items[1]);
+            run(items, cmd);
         } else if (items[0] == "suspend") {
             suspend(atoi(items[1].c_str()));
         } else if (items[0] == "resume") {
