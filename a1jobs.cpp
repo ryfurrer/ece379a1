@@ -215,10 +215,10 @@ int main(int argc, char *argv[]) {
 	tms en_cpu;
 	static clock_t en_time = times(&en_cpu);
 
-    printf("real:        %li\n sec.", (long int)(en_time - st_time)/sysconf(_SC_CLK_TCK));
-    printf("user:        %li\n sec.", (long int)(en_cpu.tms_utime - st_cpu.tms_utime)/sysconf(_SC_CLK_TCK));
-    printf("sys:         %li\n sec.", (long int)(en_cpu.tms_stime - st_cpu.tms_stime)/sysconf(_SC_CLK_TCK));
-    printf("child user:  %li\n sec.", (long int)(en_cpu.tms_cutime - st_cpu.tms_cutime)/sysconf(_SC_CLK_TCK));
-    printf("child sys:   %li\n sec.", (long int)(en_cpu.tms_cstime - st_cpu.tms_cstime)/sysconf(_SC_CLK_TCK));
+    printf("real:        %li sec.\n", (long int)(en_time - st_time)/sysconf(_SC_CLK_TCK));
+    printf("user:        %li sec.\n", (long int)(en_cpu.tms_utime - st_cpu.tms_utime)/sysconf(_SC_CLK_TCK));
+    printf("sys:         %li sec.\n", (long int)(en_cpu.tms_stime - st_cpu.tms_stime)/sysconf(_SC_CLK_TCK));
+    printf("child user:  %li sec.\n", (long int)(en_cpu.tms_cutime - st_cpu.tms_cutime)/sysconf(_SC_CLK_TCK));
+    printf("child sys:   %li sec.\n", (long int)(en_cpu.tms_cstime - st_cpu.tms_cstime)/sysconf(_SC_CLK_TCK));
     exit(0);
 }
