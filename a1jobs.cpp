@@ -173,7 +173,6 @@ int main(int argc, char *argv[]) {
 	tms st_cpu;
 	static clock_t st_time = times(&st_cpu);
 
-    uint job_idx = 0;
 	pid_t pid = getpid();
 
 	// 3. Run the main loop

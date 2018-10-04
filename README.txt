@@ -20,10 +20,9 @@ safeguard function provides the setrlimit command.
 
 Project Status:
 All functionality delivered for valid input. Invalid inputs unhandled for cmd line arguments in a1mon and for some invalid run commands.
-difﬁculty storing commands as "const char*," so std::string was used.
-difﬁculty handling improper programs for run commands - they cause a1jobs to be forked and then the program needs to be "quit" twice if using "quit."
-mention difﬁculties encountered in the implementation
-a1jobs has a compliation warning that job_idx is not used but it is.
+I had difﬁculty storing commands as "const char*," so std::string was used.
+Also, I had difﬁculty handling improper programs for run commands. I could not use waitpid() to check the status of the run command, since it would suspend execution of the calling process. So incorret run programs they cause a1jobs to be forked and then the program needs to be "quit" twice if using "quit."
+
 
 Testing and Results:
 The programs were compared with the example inputs and the outputs were equivalent.
