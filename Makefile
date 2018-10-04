@@ -7,7 +7,7 @@
 # ------------------------------------------------------------
 
 target=		submit
-allFiles=       Makefile a1mon.cpp a1jobs.cpp
+allFiles=       Makefile a1mon.cpp a1jobs.cpp report.pdf
 # ------------------------------------------------------------
 
 
@@ -17,7 +17,7 @@ compile:
 
 tar:
 	touch $(target).tar.gz
-	mv $(target).tar.gz  x$(target).tar.gz
+	mv $(target).tar.gz  $(target).tar.gz
 	tar -cvf $(target).tar $(allFiles)
 	gzip $(target).tar
 
