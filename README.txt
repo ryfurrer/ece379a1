@@ -1,13 +1,13 @@
 Objectives:
 This programming assignment is intended to give experience in using Unix function calls that manage processes, like fork() and execlp().
 
-Design Overview: highlight in point-form the important features of your design
-In general code tries to be put in subprocesses with comments identifing its objective from that assignment
+Design Overview: 
+In general, c++ code is used, where I code into functions for reuse with comments identifing its objective from that assignment.
 
 safeguard function provides the setrlimit command.
 
 1. a1jobs
-    -struct created for jobs
+    -struct created for a single job, a list of jobs uses a vector
     -all five commands seperated into their own functions
 
 2. a1mon
@@ -19,9 +19,7 @@ safeguard function provides the setrlimit command.
     -main:          sets up the program and provides main loop
 
 Project Status:
-All functionality delivered for valid input. Invalid inputs unhandled for cmd line arguments in a1mon and for some invalid run commands.
-I had difﬁculty storing commands as "const char*," so std::string was used.
-Also, I had difﬁculty handling improper programs for run commands. I could not use waitpid() to check the status of the run command, since it would suspend execution of the calling process. So incorret run programs they cause a1jobs to be forked and then the program needs to be "quit" twice if using "quit."
+All functionality delivered for valid input. Invalid inputs unhandled for cmd line arguments in a1mon and for some invalid run commands. I had difﬁculty storing commands as "const char*," so std::string was used. Also, I had difﬁculty handling improper programs for run commands. I could not use waitpid() to check the status of the run command, since it would suspend execution of the calling process. So incorret run programs they cause a1jobs to be forked and then the program needs to be "quit" twice if using "quit."
 
 
 Testing and Results:
@@ -29,6 +27,7 @@ The programs were compared with the example inputs and the outputs were equivale
 a1jobs was validated for if all the commands worked and it allows only 32 jobs.
 Invalid inputs were tested for a1jobs. A problem in a1jobs with incorrect run command was identified. Incorrect arguments would cause the program to fork the a1jobs program instead of printing and error message.
 a1mon was tested by running it with a1jobs and seeing it killed all processes after a1jobs quits.
+times() never returns values for user and sys.
 
 Acknowledgments:
 
