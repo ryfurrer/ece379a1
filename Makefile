@@ -16,7 +16,6 @@ compile:
 	g++ -std=c++11 -Wall a1mon.cpp -o a1mon
 
 tar:
-	touch $(target).tar.gz
 	tar -cvf $(target).tar $(allFiles)
 	gzip $(target).tar
 
