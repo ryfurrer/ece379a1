@@ -17,7 +17,6 @@ compile:
 
 tar:
 	touch $(target).tar.gz
-	mv $(target).tar.gz  $(target).tar.gz
 	tar -cvf $(target).tar $(allFiles)
 	gzip $(target).tar
 

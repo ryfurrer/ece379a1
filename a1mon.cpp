@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
     
     if (argc < 2){
         printf("Missing arguments\n");
-        return 1;
+        return -1;
     }
     
     target_pid = argv[1];
@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
     
     if (argc > 3) {
         printf("Too many arguments\n");
-        return 1;
+        return -1;
     }
 
 	// 2. Run the main loop
